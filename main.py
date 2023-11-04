@@ -1,21 +1,34 @@
-import os
-from dotenv import load_dotenv
+import sys
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-load_dotenv()
+def authorize():
+    scope = "user-library-read"
+    spotify_oauth = SpotifyOAuth(scope=scope, cache_path=None)
+    authorization = spotipy.Spotify(auth_manager=spotify_oauth)
+    return authorization
 
-CLIENT_ID=os.getenv("CLIENT_ID")
-CLIENT_SECRET=os.getenv("CLIENT_SECRET")
-REDIRECT_URI=os.getenv("REDIRECT_URI")
-
-scope = "user-library-read"
-
-# sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 def main():
-    print(CLIENT_ID)
-    print(CLIENT_SECRET)
+
+    if len(sys.argv) != 2:
+        print("Incorrect number of arguments")
+        sys.exit(1)
+
+    playlist_id = f"spotify:artist:{sys.argv[1]}"
+    
+    sp = authorize()
+
+    results = sp.artist_albums(playlist_id, album_type='album')
+    albums = results['items']
+    while results['next']:
+        results = sp.next(results)
+        albums.extend(results['items'])
+
+    for album in albums:
+        print(album['name'])
+    
+
 
 
 if __name__ == "__main__":
