@@ -1,9 +1,10 @@
 @echo off
+
 echo Setting up Python virtual environment...
 python -m venv venv
 if errorlevel 1 (
-    echo Failed to create virtual environment.
-    exit
+    echo Failed to create virtual environment
+    goto End
 )
 echo Virtual environment created successfully.
 
@@ -12,9 +13,12 @@ call venv\Scripts\activate
 pip install -r requirements.txt
 if errorlevel 1 (
     echo Failed to install requirements.
-    exit
+    goto End
 )
 echo Requirements installed successfully.
 
 echo Setup completed.
-exit
+
+:End
+echo End of script. Press any key to exit.
+pause
