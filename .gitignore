@@ -2,3 +2,4 @@ venv
 .idea
 .env
 .cache
+.cache-user-library-read
