@@ -21,7 +21,9 @@ def main():
     if len(local_songs) != 0:
         print(local_songs)
 
-    get_youtube_song()
+    result = get_youtube_song(song_info[0])
+
+    print(result)
     
 
 if __name__ == "__main__":

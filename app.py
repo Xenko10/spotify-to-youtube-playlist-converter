@@ -54,7 +54,7 @@ def get_playlist_info(sp, playlist_id):
     print(f"Received Playlist Info for playlist {playlist_id}")
     return playlist_name, song_info, local_songs 
 
-def get_youtube_song():
+def get_youtube_song(song):
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
     api_service_name = "youtube"
@@ -67,9 +67,9 @@ def get_youtube_song():
     youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
     request = youtube.search().list(
-        q='Darude Sandstorm',part='snippet'
+        q=song,part='snippet'
     )
     response = request.execute()
 
-    print(response)
+    return f"https://www.youtube.com/watch?v={response['items'][0]['id']['videoId']}"
 
