@@ -3,3 +3,4 @@ venv
 .env
 .cache
 .cache-user-library-read
+__pycache__
