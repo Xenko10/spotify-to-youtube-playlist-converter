@@ -3,11 +3,15 @@ from spotipy.oauth2 import SpotifyOAuth
 import spotipy.util as util
 import os
 from dotenv import load_dotenv
+import google_auth_oauthlib.flow
+import googleapiclient.discovery
+import googleapiclient.errors
 
 load_dotenv()
 CLIENT_ID=os.getenv("CLIENT_ID")
 CLIENT_SECRET=os.getenv("CLIENT_SECRET")
 REDIRECT_URI=os.getenv("REDIRECT_URI")
+YOUTUBE_API_KEY=os.getenv("YOUTUBE_API_KEY")
 
 def get_spotify_id(str):
     if str[:34]=="https://open.spotify.com/playlist/":
@@ -47,6 +51,25 @@ def get_playlist_info(sp, playlist_id):
             song_info[x] = y["name"] + " by " + artists
         else:
             local_songs.append((y["name"],y["id"]))
-                
     print(f"Received Playlist Info for playlist {playlist_id}")
     return playlist_name, song_info, local_songs 
+
+def get_youtube_song():
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
+    api_service_name = "youtube"
+    api_version = "v3"
+    client_secrets_file = "client_secret.json"
+
+    scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
+    flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(client_secrets_file, scopes)
+    credentials = flow.run_console()
+    youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
+
+    request = youtube.search().list(
+        q='Darude Sandstorm',part='snippet'
+    )
+    response = request.execute()
+
+    print(response)
+

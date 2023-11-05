@@ -20,6 +20,8 @@ def main():
     
     if len(local_songs) != 0:
         print(local_songs)
+
+    get_youtube_song()
     
 
 if __name__ == "__main__":
