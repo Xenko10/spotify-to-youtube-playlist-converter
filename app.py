@@ -54,22 +54,31 @@ def get_playlist_info(sp, playlist_id):
     print(f"Received Playlist Info for playlist {playlist_id}")
     return playlist_name, song_info, local_songs 
 
-def get_youtube_song(song):
+def connect_to_youtube_api():
+    scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-
     api_service_name = "youtube"
     api_version = "v3"
     client_secrets_file = "client_secret.json"
-
-    scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(client_secrets_file, scopes)
     credentials = flow.run_console()
-    youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
+    youtube = googleapiclient.discovery.build(
+        api_service_name, api_version, credentials=credentials)
+    return youtube
 
+youtube = connect_to_youtube_api()
+
+def get_youtube_song(song):
     request = youtube.search().list(
         q=song,part='snippet'
     )
     response = request.execute()
 
     return f"https://www.youtube.com/watch?v={response['items'][0]['id']['videoId']}"
+
+def create_playlist(playlist_name):
+    request = youtube.playlists().insert(part = "snippet", body={"snippet": {"title":playlist_name}}
+    )
+    response = request.execute()
+
 

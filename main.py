@@ -21,9 +21,11 @@ def main():
     if len(local_songs) != 0:
         print(local_songs)
 
+    # get url of first song from Spotify playlist
     result = get_youtube_song(song_info[0])
 
-    print(result)
+    create_playlist(playlist_name)
+
     
 
 if __name__ == "__main__":
