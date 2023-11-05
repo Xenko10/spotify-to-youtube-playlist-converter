@@ -48,5 +48,5 @@ def get_playlist_info(sp, playlist_id):
         else:
             local_songs.append((y["name"],y["id"]))
                 
-    print(f'Revieved Playlist Info for playlist {playlist_id}')
+    print(f"Received Playlist Info for playlist {playlist_id}")
     return playlist_name, song_info, local_songs 
