@@ -52,7 +52,17 @@ def main():
         print("Incorrect number of arguments")
         sys.exit(1)
 
-    playlist_id = f"spotify:playlist:{sys.argv[1]}"
+    sys_arg = sys.argv[1]
+
+    spotify_id = ""
+
+    if sys_arg[:34]=="https://open.spotify.com/playlist/":
+        spotify_id = sys_arg[34:56]
+    else:
+        spotify_id = sys.argv[1]
+
+
+    playlist_id = f"spotify:playlist:{spotify_id}"
     
     sp = authorize()
 
