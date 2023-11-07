@@ -26,17 +26,18 @@ def authorize():
     authorization = spotipy.Spotify(auth_manager=spotify_oauth)
     return authorization
 
-def get_playlist_info(sp, playlist_id):
+def get_playlist_info(sp, playlist_id, limit):
     playlist = sp.playlist(playlist_id)
     tracks = playlist["tracks"]
     playlist_name = playlist["name"]
     all_tracks = tracks["items"]
-    while tracks["next"]:
-        tracks = sp.next(tracks)
-        all_tracks.extend(tracks["items"])
+    if limit>100:
+        while tracks["next"]:
+            tracks = sp.next(tracks)
+            all_tracks.extend(tracks["items"])
     
     songs = [x["track"] for x in all_tracks]
-    song_info = {}
+    songs_dict = {}
     local_songs = []
 
     for x,y in enumerate(songs):
@@ -48,11 +49,13 @@ def get_playlist_info(sp, playlist_id):
                 k+=1
                 if (len(y["artists"]) - k) != 0:
                     artists += ", "
-            song_info[x] = y["name"] + " by " + artists
+            songs_dict[x] = y["name"] + " by " + artists
         else:
             local_songs.append((y["name"],y["id"]))
+        if x==limit-1:
+            break
     print(f"Received Playlist Info for playlist {playlist_id}")
-    return playlist_name, song_info, local_songs 
+    return playlist_name, songs_dict, local_songs 
 
 def connect_to_youtube_api():
     scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -66,9 +69,7 @@ def connect_to_youtube_api():
         api_service_name, api_version, credentials=credentials)
     return youtube
 
-youtube = connect_to_youtube_api()
-
-def get_youtube_song(song):
+def get_youtube_song(song, youtube):
     request = youtube.search().list(
         q=song,part='snippet'
     )
@@ -76,7 +77,7 @@ def get_youtube_song(song):
 
     return f"https://www.youtube.com/watch?v={response['items'][0]['id']['videoId']}"
 
-def create_playlist(playlist_name):
+def create_playlist(playlist_name, youtube):
     request = youtube.playlists().insert(part = "snippet", body={"snippet": {"title":playlist_name}}
     )
     response = request.execute()

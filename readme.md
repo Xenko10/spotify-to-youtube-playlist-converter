@@ -6,6 +6,6 @@ Spotify to Youtube playlist converter is an app that helps you create Youtube pl
 
 - [x] - Make a connection to Spotify Api
 - [x] - Get all song names of given Spotify playlist
+- [x] - Create empty playlist
 - [ ] - Get all urls of songs on Youtube
-- [ ] - Create empty playlist
 - [ ] - Add all songs to playlist
