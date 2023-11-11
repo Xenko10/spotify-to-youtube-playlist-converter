@@ -19,17 +19,17 @@ def main():
         return
 
     playlist_name, songs_dict, local_songs = get_playlist_info(sp, playlist_id, limit)
-    songs_urls = {}
+    songs_ids = {}
 
     youtube = connect_to_youtube_api()
 
     for i in songs_dict:
-        songs_urls[i] = get_youtube_song(songs_dict[i], youtube)
+        songs_ids[i] = get_youtube_song(songs_dict[i], youtube)
 
-    for i in songs_urls:
-        print(songs_urls[i], youtube)
+    youtube_playlist_id = create_playlist(playlist_name, youtube)
 
-    create_playlist(playlist_name)
+    for i in songs_ids:
+        add_song_to_playlist(youtube_playlist_id, songs_ids[i], youtube)
 
     
 
