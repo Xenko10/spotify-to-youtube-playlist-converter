@@ -10,11 +10,11 @@ Spotify to Youtube playlist converter is an app that helps you create Youtube pl
 - cd spotify-to-youtube-playlist-converter
 - create .env file with those variables:
 
-SPOTIPY_CLIENT_ID="< spotify client id >"
-SPOTIPY_CLIENT_SECRET="< spotify client secret >"
-SPOTIPY_REDIRECT_URI="< spotify redirect URI >"
-YOUTUBE_CLIENT_ID="< youtube client id >"
-YOUTUBE_CLIENT_SECRET="< youtube client secret >"
+SPOTIPY_CLIENT_ID="< spotify client id >"  
+SPOTIPY_CLIENT_SECRET="< spotify client secret >"  
+SPOTIPY_REDIRECT_URI="< spotify redirect URI >"  
+YOUTUBE_CLIENT_ID="< youtube client id >"  
+YOUTUBE_CLIENT_SECRET="< youtube client secret >"  
 YOUTUBE_API_KEY="< youtube API key >"
 
 - start setup.bat
