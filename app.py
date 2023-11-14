@@ -39,7 +39,7 @@ def get_playlist_info(sp, playlist_id, limit):
     songs = [x["track"] for x in all_tracks]
     songs_dict = {}
     local_songs = []
-
+    song_number = 0
     for x, y in enumerate(songs):
         if not y["is_local"]:
             artists = ""
@@ -49,13 +49,26 @@ def get_playlist_info(sp, playlist_id, limit):
                 k+=1
                 if (len(y["artists"]) - k) != 0:
                     artists += ", "
-            songs_dict[x] = y["name"] + " by " + artists
+            songs_dict[song_number] = y["name"] + " by " + artists
+            song_number+=1
         else:
-            local_songs.append((y["name"],y["id"]))
+            if y["artists"][0]["name"] != "":
+                artists = ""
+                k=0
+                for i in y["artists"]:
+                    artists += (i["name"])
+                    k+=1
+                    if (len(y["artists"]) - k) != 0:
+                        artists += ", "
+                songs_dict[song_number] = y["name"] + " by " + artists
+                song_number += 1
+            else:
+                local_songs.append((y["name"],y["id"]))
+
         if x==limit-1:
             break
     print(f"Received Playlist Info for playlist {playlist_id}")
-    return playlist_name, songs_dict, local_songs 
+    return playlist_name, songs_dict
 
 def connect_to_youtube_api():
     scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -95,4 +108,3 @@ def add_song_to_playlist(youtube_playlist_id, song_id, youtube):
     print(f"Added song {song_id} to playlist {youtube_playlist_id}")
 
     return response["id"]
-

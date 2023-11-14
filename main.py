@@ -21,8 +21,10 @@ def main():
         print("Limit not in range 1-10000")
         return
 
-    playlist_name, songs_dict, local_songs = get_playlist_info(sp, playlist_id, limit)
+    playlist_name, songs_dict = get_playlist_info(sp, playlist_id, limit)
     songs_ids = {}
+
+    print(songs_dict)
 
     youtube = connect_to_youtube_api()
 

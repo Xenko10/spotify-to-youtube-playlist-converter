@@ -1,6 +1,6 @@
-## What is the Spotify to Youtube playlist converter?
+## What is the Spotify to YouTube playlist converter?
 
-Spotify to Youtube playlist converter is an app that helps you create Youtube playlist from your Spotify playlist.
+The Spotify to YouTube playlist converter is an application designed to assist you in creating a YouTube playlist based on your existing Spotify playlist.
 
 ## How to start this app?
 
@@ -20,3 +20,8 @@ SPOTIPY_REDIRECT_URI="< spotify redirect URI >"
 2. Usage
 
 - python main.py < spotify url >
+
+## Disadvantages of this app
+
+- The regular user is limited to a quota of 10,000 tokens in the YouTube API, allowing the addition of 66 songs (10000/150) to a new playlist each day.
+- During the search for a YouTube song, the app retrieves the first result from the YouTube API, which may occasionally lead to the addition of an incorrect song to the playlist, though such occurrences are rare.
