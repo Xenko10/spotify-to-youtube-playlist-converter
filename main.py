@@ -1,20 +1,23 @@
 import sys
-from app import *
+from app import get_spotify_id, authorize, get_playlist_info, get_youtube_song, connect_to_youtube_api, create_playlist, add_song_to_playlist
 
-
-def main():
+def get_args():
     if len(sys.argv) != 2:
         print("Incorrect number of arguments")
         sys.exit(1)
+    return get_spotify_id(sys.argv[1])
 
-    spotify_id = get_spotify_id(sys.argv[1])
+
+def main():
+    spotify_id = get_args()
+
     playlist_id = f"spotify:playlist:{spotify_id}"
     sp = authorize()
    
-    # Set proper limit ( limit = floor( ( quora tokens in Youtube API ) /150 ) ). There is 10000 quora tokens by defualt, so normally 66 is the limit for normal user.
+    # Set proper limit ( limit = floor( ( quota tokens in Youtube API ) /150 ) ). There is 10000 quota tokens by defualt, so normally 66 is the limit for normal user.
     limit = 50 # range 1-10000
 
-    if limit not in range (1, 10000):
+    if limit not in range (1, 10_000):
         print("Limit not in range 1-10000")
         return
 
@@ -32,6 +35,5 @@ def main():
         add_song_to_playlist(youtube_playlist_id, songs_ids[i], youtube)
 
     
-
 if __name__ == "__main__":
     main()

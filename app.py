@@ -21,7 +21,7 @@ def get_spotify_id(str):
 
 def authorize():
     scope = "user-library-read"
-    util.prompt_for_user_token(scope,client_id=CLIENT_ID,client_secret=CLIENT_SECRET,redirect_uri=REDIRECT_URI)
+    util.prompt_for_user_token(scope, client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI)
     spotify_oauth = SpotifyOAuth(scope=scope, cache_path=None)
     authorization = spotipy.Spotify(auth_manager=spotify_oauth)
     return authorization
@@ -40,7 +40,7 @@ def get_playlist_info(sp, playlist_id, limit):
     songs_dict = {}
     local_songs = []
 
-    for x,y in enumerate(songs):
+    for x, y in enumerate(songs):
         if not y["is_local"]:
             artists = ""
             k=0
@@ -62,7 +62,8 @@ def connect_to_youtube_api():
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
     api_service_name = "youtube"
     api_version = "v3"
-    client_secrets_file = "client_secret.json"
+    # make sure to download client_secret.json from google cloud console and put it in the same directory as this file
+    client_secrets_file = "client_secret.json" # change your file to this name
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(client_secrets_file, scopes)
     credentials = flow.run_console()
     youtube = googleapiclient.discovery.build(
