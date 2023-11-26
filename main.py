@@ -1,7 +1,8 @@
 import sys
 import os
 from dotenv import load_dotenv
-from app import get_spotify_id, authorize, get_playlist_info, get_youtube_song, connect_to_youtube_api, create_playlist, add_song_to_playlist, get_args
+from spotify_utils import get_args, get_spotify_id, authorize, get_playlist_info
+from youtube_utils import connect_to_youtube_api, get_youtube_song, create_playlist, add_song_to_playlist 
 
 load_dotenv()
 CLIENT_ID=os.getenv("CLIENT_ID")
