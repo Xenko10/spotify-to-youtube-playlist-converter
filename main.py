@@ -1,5 +1,13 @@
 import sys
+import os
+from dotenv import load_dotenv
 from app import get_spotify_id, authorize, get_playlist_info, get_youtube_song, connect_to_youtube_api, create_playlist, add_song_to_playlist
+
+load_dotenv()
+CLIENT_ID=os.getenv("CLIENT_ID")
+CLIENT_SECRET=os.getenv("CLIENT_SECRET")
+REDIRECT_URI=os.getenv("REDIRECT_URI")
+YOUTUBE_API_KEY=os.getenv("YOUTUBE_API_KEY")
 
 def get_args():
     if len(sys.argv) != 2:
@@ -7,12 +15,11 @@ def get_args():
         sys.exit(1)
     return get_spotify_id(sys.argv[1])
 
-
 def main():
     spotify_id = get_args()
 
     playlist_id = f"spotify:playlist:{spotify_id}"
-    sp = authorize()
+    sp = authorize(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI)
    
     # Set proper limit ( limit = floor( ( quota tokens in Youtube API ) /150 ) ). There is 10000 quota tokens by defualt, so normally 66 is the limit for normal user.
     limit = 50 # range 1-10000
