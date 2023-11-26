@@ -17,7 +17,7 @@ def get_spotify_id(str):
         return spotify_id
     return 
 
-def authorize(client_id, client_secret, redirect_uri):
+def get_spotify_authorization(client_id, client_secret, redirect_uri):
     scope = "user-library-read"
     util.prompt_for_user_token(scope, client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri)
     spotify_oauth = SpotifyOAuth(scope=scope, cache_path=None)

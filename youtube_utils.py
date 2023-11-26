@@ -2,13 +2,13 @@ import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
 
-def connect_to_youtube_api():
-    scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
-    api_service_name = "youtube"
-    api_version = "v3"
+def get_youtube_authorization():
     # make sure to download client_secret.json from google cloud console and put it in the same directory as this file
     client_secrets_file = "client_secret.json" # change your file to this name
+    scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(client_secrets_file, scopes)
+    api_service_name = "youtube"
+    api_version = "v3"
     credentials = flow.run_console()
     youtube = googleapiclient.discovery.build(
         api_service_name, api_version, credentials=credentials)
