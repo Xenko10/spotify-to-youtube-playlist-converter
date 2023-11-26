@@ -5,11 +5,20 @@ import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
 
+def get_args(args):
+    if len(args) != 2:
+        return
+    return args[1]
+
 def get_spotify_id(str):
+    spotify_id = ""
     if str[:34]=="https://open.spotify.com/playlist/":
-        return str[34:56]
+        spotify_id = str[34:56]
     else:
-        return str[:22]
+        spotify_id = str[:22]
+    if len(spotify_id) == 22:
+        return spotify_id
+    return 
 
 def authorize(client_id, client_secret, redirect_uri):
     scope = "user-library-read"

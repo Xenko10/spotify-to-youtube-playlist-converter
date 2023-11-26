@@ -1,7 +1,7 @@
 import sys
 import os
 from dotenv import load_dotenv
-from app import get_spotify_id, authorize, get_playlist_info, get_youtube_song, connect_to_youtube_api, create_playlist, add_song_to_playlist
+from app import get_spotify_id, authorize, get_playlist_info, get_youtube_song, connect_to_youtube_api, create_playlist, add_song_to_playlist, get_args
 
 load_dotenv()
 CLIENT_ID=os.getenv("CLIENT_ID")
@@ -9,16 +9,25 @@ CLIENT_SECRET=os.getenv("CLIENT_SECRET")
 REDIRECT_URI=os.getenv("REDIRECT_URI")
 YOUTUBE_API_KEY=os.getenv("YOUTUBE_API_KEY")
 
-def get_args():
-    if len(sys.argv) != 2:
-        print("Incorrect number of arguments")
-        sys.exit(1)
-    return get_spotify_id(sys.argv[1])
+
 
 def main():
-    spotify_id = get_args()
+    args = sys.argv
 
-    playlist_id = f"spotify:playlist:{spotify_id}"
+    user_input = get_args(args)
+
+    if not user_input:
+        print("Invalid argument.")
+        print("Usage: python main.py <spotify_playlist_id>")
+        return
+
+    spotify_playlist_id = get_spotify_id(user_input)
+
+    if not spotify_playlist_id:
+        print("User input is not a valid Spotify playlist URL or ID.")
+        return
+    
+    playlist_url = f"spotify:playlist:{spotify_playlist_id}"
     sp = authorize(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI)
    
     # Set proper limit ( limit = floor( ( quota tokens in Youtube API ) /150 ) ). There is 10000 quota tokens by defualt, so normally 66 is the limit for normal user.
@@ -28,7 +37,7 @@ def main():
         print("Limit not in range 1-10000")
         return
 
-    playlist_name, songs_dict = get_playlist_info(sp, playlist_id, limit)
+    playlist_name, songs_dict = get_playlist_info(sp, playlist_url, limit)
     songs_ids = {}
 
     print(songs_dict)
