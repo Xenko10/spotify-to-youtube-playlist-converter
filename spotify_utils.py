@@ -40,33 +40,16 @@ def obtain_spotify_playlist_info(spotify, playlist_url, limit):
 def get_spotify_playlist_songs(all_tracks, limit):
     songs = [x["track"] for x in all_tracks]
     songs_dict = {}
-    local_songs = []
-    song_number = 0
     for x, y in enumerate(songs):
-        if not y["is_local"]:
-            artists = ""
-            k=0
-            for i in y["artists"]:
-                artists += (i["name"])
-                k+=1
-                if (len(y["artists"]) - k) != 0:
-                    artists += ", "
-            songs_dict[song_number] = y["name"] + " by " + artists
-            song_number+=1
-        else:
-            if y["artists"][0]["name"] != "":
-                artists = ""
-                k=0
-                for i in y["artists"]:
-                    artists += (i["name"])
-                    k+=1
-                    if (len(y["artists"]) - k) != 0:
-                        artists += ", "
-                songs_dict[song_number] = y["name"] + " by " + artists
-                song_number += 1
-            else:
-                local_songs.append((y["name"],y["id"]))
-
-        if x==limit-1:
+        if x==limit:
             break
+        artists = ""
+        k=0
+        for i in y["artists"]:
+            artists += (i["name"])
+            k+=1
+            if (len(y["artists"]) - k) != 0:
+                artists += ", "
+        songs_dict[x] = y["name"] + " by " + artists
+
     return songs_dict
