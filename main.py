@@ -1,7 +1,7 @@
 import sys
 import os
 from dotenv import load_dotenv
-from spotify_utils import get_args, get_spotify_id, get_spotify_authorization, get_spotify_playlist_tracks_info, get_spotify_playlist_songs
+from spotify_utils import get_args, get_spotify_id, get_spotify_authorization, obtain_spotify_playlist_info, get_spotify_playlist_songs
 from youtube_utils import get_youtube_authorization, get_youtube_song, create_playlist, add_song_to_playlist 
 
 load_dotenv()
@@ -35,7 +35,7 @@ def main():
         print("Limit not in range 1-10000")
         return
 
-    playlist_name, spotify_tracks_info = get_spotify_playlist_tracks_info(spotify, playlist_url, limit)
+    playlist_name, spotify_tracks_info = obtain_spotify_playlist_info(spotify, playlist_url, limit)
 
     spotify_songs = get_spotify_playlist_songs(spotify_tracks_info, limit)
 

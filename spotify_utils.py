@@ -24,7 +24,7 @@ def get_spotify_authorization(client_id, client_secret, redirect_uri):
     authorization = spotipy.Spotify(auth_manager=spotify_oauth)
     return authorization
 
-def get_spotify_playlist_tracks_info(spotify, playlist_url, limit):
+def obtain_spotify_playlist_info(spotify, playlist_url, limit):
     playlist = spotify.playlist(playlist_url)
     playlist_name = playlist["name"]
     retrieved_tracks = playlist["tracks"]
