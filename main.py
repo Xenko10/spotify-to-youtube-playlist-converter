@@ -29,7 +29,7 @@ def main():
     spotify = get_spotify_authorization(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI)
    
     # Set proper limit ( limit = floor( ( quota tokens in Youtube API ) /150 ) ). There is 10000 quota tokens by defualt, so normally 66 is the limit for normal user.
-    limit = 30 # range 1-10000
+    limit = 50 # range 1-10000
 
     if limit not in range (1, 10_000):
         print("Limit not in range 1-10000")
@@ -38,8 +38,6 @@ def main():
     playlist_name, spotify_tracks_info = obtain_spotify_playlist_info(spotify, playlist_url, limit)
 
     spotify_songs = get_spotify_playlist_songs(spotify_tracks_info, limit)
-
-    print(spotify_songs)
 
     youtube = get_youtube_authorization()
 

@@ -43,13 +43,18 @@ def get_spotify_playlist_songs(all_tracks, limit):
     for x, y in enumerate(songs):
         if x==limit:
             break
+        
         artists = ""
-        k=0
-        for i in y["artists"]:
-            artists += (i["name"])
-            k+=1
-            if (len(y["artists"]) - k) != 0:
+        for i, j in enumerate(y["artists"]):
+            if (j["name"] == ""):
+                break
+            artists += (j["name"])
+            if (len(y["artists"]) - i) != 0:
                 artists += ", "
-        songs_dict[x] = y["name"] + " by " + artists
+
+        if artists == "":
+            songs_dict[x] = y["name"]
+        else:
+            songs_dict[x] = y["name"] + " by " + artists
 
     return songs_dict
