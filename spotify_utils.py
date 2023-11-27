@@ -24,16 +24,20 @@ def get_spotify_authorization(client_id, client_secret, redirect_uri):
     authorization = spotipy.Spotify(auth_manager=spotify_oauth)
     return authorization
 
-def get_playlist_info(sp, playlist_id, limit):
-    playlist = sp.playlist(playlist_id)
-    tracks = playlist["tracks"]
+def get_spotify_playlist_tracks_info(spotify, playlist_url, limit):
+    playlist = spotify.playlist(playlist_url)
     playlist_name = playlist["name"]
-    all_tracks = tracks["items"]
-    if limit>100:
-        while tracks["next"]:
-            tracks = sp.next(tracks)
-            all_tracks.extend(tracks["items"])
+    retrieved_tracks = playlist["tracks"]
+    all_tracks = retrieved_tracks["items"]
     
+    if limit>100:
+        while retrieved_tracks["next"]:
+            retrieved_tracks = spotify.next(retrieved_tracks)
+            all_tracks.extend(retrieved_tracks["items"])
+
+    return playlist_name, all_tracks
+    
+def get_spotify_playlist_songs(all_tracks, limit):
     songs = [x["track"] for x in all_tracks]
     songs_dict = {}
     local_songs = []
@@ -65,5 +69,4 @@ def get_playlist_info(sp, playlist_id, limit):
 
         if x==limit-1:
             break
-    print(f"Received Playlist Info for playlist {playlist_id}")
-    return playlist_name, songs_dict
+    return songs_dict

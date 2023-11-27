@@ -1,7 +1,7 @@
 import sys
 import os
 from dotenv import load_dotenv
-from spotify_utils import get_args, get_spotify_id, get_spotify_authorization, get_playlist_info
+from spotify_utils import get_args, get_spotify_id, get_spotify_authorization, get_spotify_playlist_tracks_info, get_spotify_playlist_songs
 from youtube_utils import get_youtube_authorization, get_youtube_song, create_playlist, add_song_to_playlist 
 
 load_dotenv()
@@ -29,22 +29,22 @@ def main():
     spotify = get_spotify_authorization(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI)
    
     # Set proper limit ( limit = floor( ( quota tokens in Youtube API ) /150 ) ). There is 10000 quota tokens by defualt, so normally 66 is the limit for normal user.
-    limit = 50 # range 1-10000
+    limit = 334 # range 1-10000
 
     if limit not in range (1, 10_000):
         print("Limit not in range 1-10000")
         return
 
-    playlist_name, songs_dict = get_playlist_info(spotify, playlist_url, limit)
+    playlist_name, spotify_tracks_info = get_spotify_playlist_tracks_info(spotify, playlist_url, limit)
 
-    print(songs_dict)
+    spotify_songs = get_spotify_playlist_songs(spotify_tracks_info, limit)
 
     youtube = get_youtube_authorization()
 
     songs_ids = {}
 
-    for i in songs_dict:
-        songs_ids[i] = get_youtube_song(songs_dict[i], youtube)
+    for i in spotify_songs:
+        songs_ids[i] = get_youtube_song(spotify_songs[i], youtube)
 
     youtube_playlist_id = create_playlist(playlist_name, youtube)
 
